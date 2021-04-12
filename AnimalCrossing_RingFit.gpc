@@ -1,0 +1,121 @@
+#pragma METAINFO("RingFit_Animal Crossing", 1, 0, "Super_Louis64")
+
+
+/*
+Ring Fit mod for Animal crossing
+Inputs below:
+Squeeze Ringcon to use item
+Squat to open menus
+-
+
+*/
+
+
+
+
+bool controllerON;
+bool isRunning;
+
+// Combo Timers
+
+int runCheck;
+
+init
+{
+	controllerON = FALSE;
+	isRunning = FALSE;
+	// remap sticks so you can use the right joycon to move
+	remapper_swap(STICK_2_X, STICK_1_X);
+	remapper_swap(STICK_2_Y, STICK_1_Y);
+	runCheck = 0;
+}
+
+
+
+main 
+{
+	
+// squeeze Ringcon to use items "a button"
+		if(get_val(ACCEL_2_X) < -25.0)
+			{
+				set_val(BUTTON_15, 100.0);
+			}
+			
+	nowRunning();
+			
+	//turn off buttons if i'm not running
+	if(runCheck < 70)
+		{
+			set_val(STICK_2_X, 0.0);
+			set_val(STICK_2_Y, 0.0);
+			// disableButtons();
+			
+		}
+			
+
+// ACCEL_1_Z = -25.00 = squats + hold R = open phone
+	if(get_val(ACCEL_1_Z) < -19.00 && get_val(BUTTON_4) == 100.0)
+		{
+			set_val(BUTTON_4, 0.0);
+			set_val(BUTTON_8, 100.0);
+		}
+		
+	// turn off R so you can squat
+	if(get_val(BUTTON_4) > 0.0 && get_val(ACCEL_1_Z) != -25.00)
+		{
+			set_val(BUTTON_4, 0.0);
+		}	
+		
+// ACCEL_1_Z = -25.00 = squats + ZR = Press X for menu
+	if(get_val(ACCEL_1_Z) == -25.00 && get_val(BUTTON_5) == 100.0)
+		{
+			set_val(BUTTON_5, 0.0);
+			set_val(BUTTON_14, 100.0);
+		}	
+	// turn off ZR so you can squat
+	if(get_val(BUTTON_5) > 0.0 && get_val(ACCEL_1_Z) != -25.00)
+		{
+			set_val(BUTTON_5, 0.0);
+		}		
+		
+	if(runCheck <0)
+		{
+			runCheck = 0;
+		}
+
+//debug();
+
+}
+
+// the command to let me do things only if I'm running
+void nowRunning()
+{
+	if(get_val(ACCEL_1_Y) < -30.6)
+		{
+			runCheck = 100;	
+				
+		}
+	if(get_val(ACCEL_1_Y) < -23.8 && get_val(ACCEL_1_Y) > -24.6)
+		{
+			runCheck--;
+		}
+
+}
+
+// turns off all buttons so nothing can come out
+void disableButtons() 
+{
+    uint8 i = BUTTON_1;
+ 
+    for(; i<=BUTTON_21; ++i) {
+        set_val(i, 0.0);
+    }
+}
+
+
+
+void debug()
+{
+	printf("%d", runCheck);
+	
+}

@@ -1,0 +1,108 @@
+#pragma METAINFO("NoRingFit_Animal Crossing", 1, 5, "Super_Louis64")
+
+
+/*
+Made in 4/11/2021
+
+Ring Fit mod for Animal crossing
+Inputs for game listed here:
+- Punch with hand joycon to press "A"
+- Squat while holding ZR or R to open menus
+- Joysticks are swapped, hand joycon now controls movement
+- Moving in-game is unlocked when player moves IRL
+
+*/
+
+bool isRunning;
+
+int runCheck;
+
+init
+{
+	isRunning = FALSE;
+	// remap sticks so you can use the right joycon to move
+	remapper_swap(STICK_2_X, STICK_1_X);
+	remapper_swap(STICK_2_Y, STICK_1_Y);
+	runCheck = 0;
+}
+
+
+main 
+{
+// ShadowBox to press "A"
+		if(get_val(ACCEL_2_Y) > 50.0)
+			{
+				set_val(BUTTON_15, 100.0);
+			}
+			
+	nowRunning();
+			
+/*turn off buttons if i'm not running
+70 is a magic number that sets a pace for the user to be running at for 
+the controller's joystick to be activated
+increase if you want to run harder, decrease if you want to run less
+*/
+	if(runCheck < 70)
+		{
+			set_val(STICK_2_X, 0.0);
+			set_val(STICK_2_Y, 0.0);
+		}
+			
+
+// ACCEL_1_Z = -19.00 (this is the value of squating) + hold R (BUTTON_5) = open phone
+	if(get_val(ACCEL_1_Z) < -19.00 && get_val(BUTTON_4) == 100.0)
+		{
+			set_val(BUTTON_4, 0.0);
+			set_val(BUTTON_8, 100.0);
+		}
+		
+// turn off R button so you have to squat to use it
+	if(get_val(BUTTON_4) > 0.0 && get_val(ACCEL_1_Z) != -25.00)
+		{
+			set_val(BUTTON_4, 0.0);
+		}	
+		
+// ACCEL_1_Z < -25.00 (Squat motion) + ZR = Press X for menu
+	if(get_val(ACCEL_1_Z) == -25.00 && get_val(BUTTON_5) == 100.0)
+		{
+			set_val(BUTTON_5, 0.0);
+			set_val(BUTTON_14, 100.0);
+		}	
+// turn off ZR so you can squat
+	if(get_val(BUTTON_5) > 0.0 && get_val(ACCEL_1_Z) != -25.00)
+		{
+			set_val(BUTTON_5, 0.0);
+		}		
+	
+// resets variable to 0 if it goes under 0
+	if(runCheck <0)
+		{
+			runCheck = 0;
+		}
+
+//debug();
+
+}
+
+// the command to let me do things only if I'm running
+// This function checks if the joycons are shaking in your legstrap due to running
+void nowRunning()
+{
+	if(get_val(ACCEL_1_Y) < -30.6)
+		{
+			runCheck = 100;	
+				
+		}
+	if(get_val(ACCEL_1_Y) < -23.8 && get_val(ACCEL_1_Y) > -24.6)
+		{
+			runCheck--;
+		}
+
+}
+
+
+void debug()
+{
+	printf("%d", runCheck);
+	
+}
