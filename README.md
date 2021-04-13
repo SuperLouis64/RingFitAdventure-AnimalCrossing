@@ -20,7 +20,7 @@ To interact with the Titan Two, you'll need to download Gtuner IV. "Gtuner IV is
 - Make sure to read over how the hardware/software works on the website. Message me if it still doesn't make sense but if I can figure it out you'll be fine!
 
 ### How to Set-up the Mod
-I have an old video that shows a how to set-up the mod. It will be updated for the current mod on the <https://www.controllerbend.com/ringfitbotw.html> site once it's ready. YouTube Video: <https://www.youtube.com/watch?v=HYn3pWXMPF8>
+I'm currently working on a better video tutorial, I'll link it once it's finished.
 1. Connect your Titan Two to your Switch via the OUTPUT port
 2. Connect your Titan Two to your PC via the PROG port
 3. Open up the Gtuner IV software
